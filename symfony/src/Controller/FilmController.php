@@ -77,17 +77,16 @@ class FilmController extends AbstractController
     public function affichageFilmSelectionne($link)
     {
         $apiKey = "2b12bb84";
-        //$link = ;
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?t='. $link .'&apikey='. $apiKey);
+        curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?i='. $link .'&apikey='. $apiKey);
         curl_setopt($ch,  CURLOPT_RETURNTRANSFER, true);
 
         $json = json_decode(curl_exec($ch));
 
         
         return $this->render('film/filmSelect.html.twig', [
-            'film' => $json->Search,
+            'film' => $json
 
         ]);
     }

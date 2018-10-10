@@ -39,7 +39,8 @@
                                     <h5 class="card-title">{{ item.Title }}</h5>
                                     <h5 class="card-title">{{ item.imdbID }}</h5>
                                     <p class="card-text">{{ item.Year }}</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    <a href="{{url('FilmSelectionne', 
+                                            { 'link': item.imdbID  })}}" class="btn btn-primary">Plus de détails</a>
                                 </div>
                             </div>
                         {% endfor %}
