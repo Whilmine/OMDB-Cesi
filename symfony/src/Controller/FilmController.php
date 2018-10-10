@@ -30,12 +30,9 @@ class FilmController extends AbstractController
             $newloop = curl_init();
             curl_setopt($newloop, CURLOPT_URL, 'http://www.omdbapi.com/?i='.$ID.'&apikey=' . $apiKey);
             curl_setopt($newloop,  CURLOPT_RETURNTRANSFER, true);
-
         }
 
         $jsontest = json_decode(curl_exec($newloop));
-        var_dump($jsontest);
-
 
         return $this->render('film/index.html.twig', [
             'controller_name' => "test",
@@ -46,43 +43,52 @@ class FilmController extends AbstractController
     }
 
     /**
-     * @Route("/film_avec_parametres/{query}", name="Film avec paramètre")
+     * @Route("/film_avec_parametres/{query1}", name="Film avec paramètre")
      */
-    public function affichageFilmavecParametres($query)
+    public function affichageFilmavecParametres($query1)
     {
-        //echo "Querry";
-        //die;
         $apiKey = "2b12bb84";
-        //$query ="monono";
+        $query1 ="pirate";
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?s='. $query .'&apikey='. $apiKey);
+        curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?s='. $query1 .'&apikey='. $apiKey);
         curl_setopt($ch,  CURLOPT_RETURNTRANSFER, true);
 
         $json = json_decode(curl_exec($ch));
-
-
 
         foreach ($json->Search as $movie){
             $ID =$movie->imdbID;
             $newloop = curl_init();
             curl_setopt($newloop, CURLOPT_URL, 'http://www.omdbapi.com/?i='.$ID.'&apikey=' . $apiKey);
             curl_setopt($newloop,  CURLOPT_RETURNTRANSFER, true);
-
         }
 
         $jsontest = json_decode(curl_exec($newloop));
-        var_dump($jsontest);
-
-
+        
         return $this->render('film/index.html.twig', [
-            'controller_name' => "test",
-            'query' => $query,
             'liste' => $json->Search,
 
         ]);
     }
 
+    /**
+     * @Route("/film_select/{link}", name="FilmSelectionne")
+     */
+    public function affichageFilmSelectionne($link)
+    {
+        $apiKey = "2b12bb84";
+        //$link = ;
 
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?t='. $link .'&apikey='. $apiKey);
+        curl_setopt($ch,  CURLOPT_RETURNTRANSFER, true);
 
+        $json = json_decode(curl_exec($ch));
+
+        
+        return $this->render('film/filmSelect.html.twig', [
+            'film' => $json->Search,
+
+        ]);
+    }
 }

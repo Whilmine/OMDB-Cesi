@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
-
 {% block body %}
     <style>
         .example-wrapper {
@@ -16,35 +14,41 @@
             padding: 2px 6px;
         }
     </style>
+    {{ include('header.html.twig') }}
 
     <div class="container-fluid ">
-    <div class="row">
-    <div class="col">
-        <h1>Hello {{ controller_name }}! ✅</h1>
+        <div class="row">
+            <div class="col">
+                <form>
+                    <label for="exampleInputEmail1">Recherche de films</label>
+                    <input class="form-control" id="exampleInputEmail1" aria-describedby="rechercheHelp" placeholder="Entrer votre recherche">
+        
+                    <button type="submit" class="btn btn-primary">C'est parti !</button>
+                </form>
+            </div>
 
-        Recherche
-        <input>
-
-
-    </div>
-
-    <h3 class="col">
-        <div class="row"> <h3 class=" bg-info text-uppercase"> Films</h3></div>
-
-        <div class="row ">
-        {% for item in liste %}
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="{{ item.Poster }}" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ item.Title }}</h5>
-                        <h5 class="card-title">{{ item.imdbID }}</h5>
-                        <p class="card-text">{{ item.Year }}</p>
-                        <a href="#" class="btn btn-primary">{Go somewhere</a>
+            <div class="col">
+                <div class="row"> 
+                    <h3 class=" bg-info text-uppercase">Films</h3>
+                </div>
+                    <div class="row">
+                        {% for item in liste %}
+                            <div class="card" style="width: 18rem;">
+                                <img class="card-img-top" src="{{ item.Poster }}" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item.Title }}</h5>
+                                    <h5 class="card-title">{{ item.imdbID }}</h5>
+                                    <p class="card-text">{{ item.Year }}</p>
+                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
-    </div>
+
+{{ include('lien.html.twig') }}
 
 {% endblock %}
