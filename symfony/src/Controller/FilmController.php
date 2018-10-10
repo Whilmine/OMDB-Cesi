@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class FilmController extends AbstractController
 {
@@ -89,5 +90,37 @@ class FilmController extends AbstractController
             'film' => $json
 
         ]);
+    }
+
+    /**
+     * @Route(
+     * "/recherchePost/}", 
+     * name="rechercheFilmPOST"
+     * )
+     */
+    public function rechercheFilmPOST(request $request)
+    {
+        $apiKey = "2b12bb84";
+
+        if ($request->request->get('query')){
+            $query = $request->request->get('query');
+        }else{
+            $query = "rien";
+        }
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?i='. $query .'&apikey='. $apiKey);
+        curl_setopt($ch,  CURLOPT_RETURNTRANSFER, true);
+
+        $resultat_curl = curl_exec($ch);
+
+        //on transforme le résultat de cURL en un objet JSON utilisable
+        $json = json_decode( $resultat_curl );
+
+        return $this->render('film/filmSelect.html.twig', [
+            'film' => $json->Search,
+        ]);
+
+
     }
 }
