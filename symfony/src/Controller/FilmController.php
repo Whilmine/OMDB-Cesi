@@ -9,17 +9,17 @@ use Symfony\Component\HttpFoundation\Request;
 class FilmController extends AbstractController
 {
     /**
-     * @Route("/query", name="Query")
+     * @Route("/", name="Home")
      */
     public function query()
     {
         //echo "Querry";
         //die;
         $apiKey = "2b12bb84";
-        $query ="monono";
+        $query ="star";
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?s=tron&apikey=' . $apiKey);
+        curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?s='.$query.'&apikey=' . $apiKey);
         curl_setopt($ch,  CURLOPT_RETURNTRANSFER, true);
 
         $json = json_decode(curl_exec($ch));
@@ -49,7 +49,7 @@ class FilmController extends AbstractController
     public function affichageFilmavecParametres($query1)
     {
         $apiKey = "2b12bb84";
-        $query1 ="pirate";
+        //$query1 ="pirate";
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?s='. $query1 .'&apikey='. $apiKey);
@@ -90,6 +90,49 @@ class FilmController extends AbstractController
             'film' => $json
 
         ]);
+    }
+
+    /**
+     * @Route(
+     * "/recherche", 
+     * name="rechercheFilm"
+     * )
+     */
+    public function rechercheFilm(request $request)
+    {
+        //analyser le contenu de l'objet request
+        //dump ($request->query->get('title'));
+        //die;
+        $query = $request->query->get('title');
+        /*$apiKey = "2b12bb84";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?s='. $query .'&apikey='. $apiKey);
+        curl_setopt($ch,  CURLOPT_RETURNTRANSFER, true);
+
+        $json = json_decode(curl_exec($ch));
+
+        foreach ($json->Search as $movie){
+            $ID =$movie->imdbID;
+            $newloop = curl_init();
+            curl_setopt($newloop, CURLOPT_URL, 'http://www.omdbapi.com/?i='.$ID.'&apikey=' . $apiKey);
+            curl_setopt($newloop,  CURLOPT_RETURNTRANSFER, true);
+        }
+
+        $jsontest = json_decode(curl_exec($newloop));
+        
+        return $this->render('film/index.html.twig', [
+            'liste' => $json->Search,
+        ]);*/
+
+        //redirection vers l'action du controleur qui va afficher la liste des films avec ce parametre -> ne fonctionne pas prob avec la route 
+        return $this->redirectToRoute(
+            'Film avec paramètre',
+            array(
+                'query1' => $request->query->get('title')
+            )
+            );
+
     }
 
     /**

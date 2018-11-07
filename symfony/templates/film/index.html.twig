@@ -13,43 +13,56 @@
             background: #F5F5F5;
             padding: 2px 6px;
         }
+
+        form{
+            margin-bottom: 30px;
+        }
     </style>
     {{ include('header.html.twig') }}
 
-    <div class="container-fluid ">
-        <div class="row">
-            <div class="col">
-                <form action="url(rechercheFilmPOST)" method="POST">
-                    <label for="exampleInputEmail1">Recherche de films</label>
-                    <input class="form-control" id="exampleInputEmail1" aria-describedby="rechercheHelp" placeholder="Entrer votre recherche" name="query">
-        
-                    <button type="submit" class="btn btn-primary">C'est parti !</button>
-                </form>
+    {{ include('form.html.twig') }}
+    
+    <div class="container-fluid "> 
+        <div class="col">
+            <div class="row">
+                <div class="jumbotron jumbotron-fluid col-md-12" 
+                style="
+                    padding-top: 24px;
+                    padding-bottom: 24px;
+                    background-color: #56c7d6;
+                    color: white;
+                ">
+                    <h1 class="display-4">Films</h1>
+                </div>
             </div>
-
-            <div class="col">
-                <div class="row"> 
-                    <h3 class=" bg-info text-uppercase">Films</h3>
-                </div>
-                    <div class="row">
-                        {% for item in liste %}
-                            <div class="card" style="width: 18rem;">
-                                <img class="card-img-top" src="{{ item.Poster }}" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ item.Title }}</h5>
-                                    <h5 class="card-title">{{ item.imdbID }}</h5>
-                                    <p class="card-text">{{ item.Year }}</p>
-                                    <a href="{{url('FilmSelectionne', 
-                                            { 'link': item.imdbID  })}}" class="btn btn-primary">Plus de détails</a>
-                                </div>
-                            </div>
-                        {% endfor %}
+        
+            <div class="row" 
+                style="
+                    display: flex;
+                    justify-content: center;
+            ">
+                {% for item in liste %}
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="{{ item.Poster }}" alt="Card image cap" 
+                            style="width: 18rem;
+                                height: 27rem; ">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.Title }}</h5>
+                            <h5 class="card-title">{{ item.imdbID }}</h5>
+                            <p class="card-text">{{ item.Year }}</p>
+                            <a href="{{url('FilmSelectionne', 
+                                { 'link': item.imdbID  })}}" class="btn btn-primary bouton_details" 
+                                style="
+                                    background-color: #FFEB3B;
+                                    border-color: #FFEB3B;
+                            ">Plus de détails</a>
+                        </div>
                     </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
 
-{{ include('lien.html.twig') }}
+    {{ include('lien.html.twig') }}
 
 {% endblock %}

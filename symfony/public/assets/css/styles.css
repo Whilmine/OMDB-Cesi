@@ -1,0 +1,24 @@
+.navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active{
+    color: white;
+}
+
+.btn_form{
+    background-color: #757575;
+    border-color: #757575;
+}
+
+.logo_img{
+    background: url(../img/niffleur.jpg) no-repeat content-box;
+    background-size: 100px 100px;
+    width: 110px;
+    height: 110px;
+}
+
+.card{
+    margin-top: 50px;
+}
+
+.card-header{
+    background-color: #FFEB3B;
+    color: #757575;
+}
