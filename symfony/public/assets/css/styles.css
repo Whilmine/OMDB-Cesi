@@ -22,3 +22,16 @@
     background-color: #FFEB3B;
     color: #757575;
 }
+
+.card-img-top{
+    height: 800px;
+}
+
+.form_partage{
+    margin-top: 50px;
+}
+
+.bouton_partage{
+    background-color: #e55039;
+    color: white;
+}

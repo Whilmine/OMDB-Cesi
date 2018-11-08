@@ -65,6 +65,19 @@ class FilmController extends AbstractController
         }
 
         $jsontest = json_decode(curl_exec($newloop));
+
+        /*if (isset($jsontest->Search)){
+            return $this->render('film/index.html.twig', [
+                'query' => $,
+                'liste' => $json->Search,
+    
+            ]);
+        }else{
+            return $this->render('film/notFound.html.twig', [
+                'liste' => $json->Search,
+    
+            ]);
+        }*/
         
         return $this->render('film/index.html.twig', [
             'liste' => $json->Search,
@@ -137,33 +150,96 @@ class FilmController extends AbstractController
 
     /**
      * @Route(
-     * "/recherchePost/}", 
-     * name="rechercheFilmPOST"
+     * "/detailsFilm/{idFilm}}", 
+     * name="ficheDetailleeMail"
      * )
      */
-    public function rechercheFilmPOST(request $request)
+    public function detailsFilm($idFilm)
     {
+        //analyser le contenu de l'objet request
+        dump ($request->request->all());
+        die;
+
+        /*$idFilm = $request->request->get('imdbId');
+        
         $apiKey = "2b12bb84";
 
-        if ($request->request->get('query')){
-            $query = $request->request->get('query');
-        }else{
-            $query = "rien";
-        }
-
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?i='. $query .'&apikey='. $apiKey);
+        curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?i='. $idFilm .'&apikey='. $apiKey);
         curl_setopt($ch,  CURLOPT_RETURNTRANSFER, true);
 
-        $resultat_curl = curl_exec($ch);
+        $json = json_decode(curl_exec($ch));
 
-        //on transforme le résultat de cURL en un objet JSON utilisable
-        $json = json_decode( $resultat_curl );
-
-        return $this->render('film/filmSelect.html.twig', [
-            'film' => $json->Search,
-        ]);
-
-
+        if (isset ($json->Response) && $json->Response == "False"){
+            return $this->render('film/notFound.html.twig');
+        }
+        else{
+            return $this->render('mail/email.html.twig', [
+                'film' => $json
+            ]);
+        }*/
     }
+
+    /**
+     * @Route(
+     * "/partage", 
+     * name="partage"
+     * )
+     */
+    public function partagePOST(request $request, \Swift_Mailer $maileur)
+    {
+       //analyser le contenu de l'objet request
+        //dump ($request->request->all());
+        //die;
+
+        $idFilm = $request->request->get('imdbId');
+        $email = $request->request->get('adresseMail');
+
+        $apiKey = "2b12bb84";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'http://www.omdbapi.com/?i='. $idFilm .'&apikey='. $apiKey);
+        curl_setopt($ch,  CURLOPT_RETURNTRANSFER, true);
+
+        $json = json_decode(curl_exec($ch));
+
+        if (isset ($json->Response) && $json->Response == "False"){
+            return $this->render('film/notFound.html.twig');
+        }
+        else{
+            $output = $this->render('mail/email.html.twig',
+            array(
+                'film' => $json
+            )
+            );
+
+            //creation d'un objet swift message
+            $message = (new \Swift_Message('Un super utilisateur veut partager avec vous un film ouf guedin : '))
+                ->setFrom('bruceLee@jardinZen.fr')
+                ->setTo( $email )
+                ->setBody(
+                    $output,
+                    'text/html'
+                );
+            
+            //appel du facteur et envoi
+            $maileur->send($message);
+
+            //ajout d'un msg de confirmation
+            $this->addFlash(
+                'success',
+                'Message envoyé avec succés. Bravo champion !'
+            );
+
+
+            return $this->redirectToRoute(
+                'FilmSelectionne',
+                array(
+                    'link' => $idFilm
+                )
+                );
+
+        }
+    }
+
 }

@@ -19,8 +19,25 @@
                     <p class="card-text">{{ film.Plot }}</p>
                 </div>
             </div>
+
+            <div class="row form_partage">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-default btn-lg bouton_partage">
+                        <span class="fas fa-share-alt-square"></span> Partage de ouf !!
+                    </button>
+                </div>
+
+                <div class="col-md-8">
+                    <form action="{{url('partage')}}" method="POST" class="col-md-8">
+                        <input class="form-control" id="adresseMail" type="email" name="adresseMail" placeholder="Entrer l'adresse e-mail">
+                        <input id="imdbId" name="imdbId" type="hidden" value='{{ film.imdbID }}'>
+                
+                        <button type="submit" class="btn btn-primary btn_form">Envoyer à ce glandu !</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
+    </div>    
 </div>
 
 {% endblock %}
